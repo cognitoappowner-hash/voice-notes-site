@@ -4,23 +4,32 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Voice Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #000000;
-    --surface: #0a0a0a;
-    --card: #111111;
-    --border: #2a2a2a;
-    --text: #ffffff;
-    --text-dim: #8a8a8a;
+    --bg: #050505;
+    --surface: #0d0d0d;
+    --card: #121212;
+    --card-hover: #161616;
+    --border: #232323;
+    --border-soft: #1a1a1a;
+    --text: #f7f7f7;
+    --text-dim: #8f8f8f;
+    --text-faint: #5c5c5c;
     --accent: #ffffff;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: var(--bg);
+    background-image: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.045), transparent 55%);
     color: var(--text);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
   a { color: var(--text); }
 
@@ -29,51 +38,67 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 40px;
-    border-bottom: 1px solid var(--border);
+    padding: 22px 44px;
+    border-bottom: 1px solid var(--border-soft);
+    position: sticky;
+    top: 0;
+    background: rgba(5,5,5,0.75);
+    backdrop-filter: blur(14px);
+    z-index: 10;
   }
-  .brand { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
-  .authArea { display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--text-dim); }
+  .brand { font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .authArea { display: flex; align-items: center; gap: 16px; font-size: 14px; color: var(--text-dim); }
   button {
     font-family: inherit;
     cursor: pointer;
     border: none;
     border-radius: 999px;
-    padding: 11px 22px;
+    padding: 12px 24px;
     font-size: 14px;
     font-weight: 600;
-    transition: opacity 0.15s ease, transform 0.1s ease;
+    transition: opacity 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
   }
-  button:active { transform: scale(0.97); }
-  .btn-solid { background: var(--text); color: #000; }
-  .btn-solid:hover { opacity: 0.85; }
+  button:active { transform: scale(0.96); }
+  .btn-solid { background: var(--text); color: #000; box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  .btn-solid:hover { opacity: 0.88; box-shadow: 0 6px 24px rgba(255,255,255,0.12); }
   .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
   .btn-outline:hover { border-color: var(--text-dim); }
-  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button:disabled { opacity: 0.35; cursor: not-allowed; }
 
   /* ---------- Landing page ---------- */
-  .landing { max-width: 720px; margin: 0 auto; padding: 100px 24px 60px; text-align: center; }
-  .landing h1 { font-size: 48px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 20px; }
-  .landing p.sub { font-size: 18px; color: var(--text-dim); max-width: 480px; margin: 0 auto 40px; line-height: 1.5; }
-  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; text-align: left; }
-  .feature { border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-  .feature .num { font-size: 13px; color: var(--text-dim); font-weight: 700; margin-bottom: 10px; }
-  .feature h3 { margin: 0 0 6px; font-size: 15px; }
-  .feature p { margin: 0; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .landing { max-width: 760px; margin: 0 auto; padding: 130px 24px 70px; text-align: center; }
+  .landing .eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-dim); border: 1px solid var(--border); padding: 7px 16px; border-radius: 999px; margin-bottom: 28px;
+  }
+  .landing h1 { font-size: 56px; line-height: 1.08; font-weight: 800; letter-spacing: -0.035em; margin: 0 0 22px; }
+  .landing p.sub { font-size: 18px; color: var(--text-dim); max-width: 500px; margin: 0 auto 40px; line-height: 1.6; font-weight: 400; }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; text-align: left; }
+  .feature {
+    border: 1px solid var(--border-soft); border-radius: 16px; padding: 26px;
+    background: linear-gradient(180deg, var(--surface), transparent);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .feature:hover { border-color: var(--border); transform: translateY(-2px); }
+  .feature .num { font-size: 13px; color: var(--text-faint); font-weight: 700; margin-bottom: 12px; letter-spacing: 0.05em; }
+  .feature h3 { margin: 0 0 8px; font-size: 16px; font-weight: 700; }
+  .feature p { margin: 0; font-size: 13.5px; color: var(--text-dim); line-height: 1.6; }
 
   /* ---------- App view ---------- */
-  .app { max-width: 640px; margin: 0 auto; padding: 48px 24px 60px; }
+  .app { max-width: 640px; margin: 0 auto; padding: 52px 24px 70px; }
+  .section-label { font-size: 12px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin: 0 0 18px; }
   .card {
     background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 36px;
-    margin-bottom: 20px;
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    padding: 38px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 20px 40px -30px rgba(0,0,0,0.8);
   }
-  .recorder { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .recorder { display: flex; flex-direction: column; align-items: center; gap: 20px; }
   #recordBtn {
-    width: 92px;
-    height: 92px;
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
     background: var(--text);
     display: flex;
@@ -82,76 +107,96 @@
     box-shadow: 0 0 0 0 rgba(255,255,255,0.3);
     border: none;
     padding: 0;
+    transition: transform 0.15s ease;
   }
+  #recordBtn:hover { transform: scale(1.04); }
   #recordBtn.recording { background: #ffffff; animation: pulse 1.6s infinite; }
-  #recordBtn svg { width: 34px; height: 34px; fill: #000; }
+  #recordBtn svg { width: 36px; height: 36px; fill: #000; }
   @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.35); }
-    70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+    70% { box-shadow: 0 0 0 22px rgba(255,255,255,0); }
     100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
   }
   #status { font-size: 14px; color: var(--text-dim); min-height: 20px; text-align: center; }
-  #timer { font-variant-numeric: tabular-nums; font-size: 30px; font-weight: 700; }
-  #titleInput {
+  #timer { font-variant-numeric: tabular-nums; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .field { width: 100%; text-align: left; }
+  .field label {
+    font-size: 11.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    display: block; margin-bottom: 8px;
+  }
+  .field select, .field input, #titleInput {
     width: 100%;
-    margin-top: 6px;
-    padding: 12px 16px;
-    border-radius: 10px;
+    padding: 13px 16px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
     font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.15s ease;
   }
-  #titleInput::placeholder { color: var(--text-dim); }
+  .field select:focus, .field input:focus, #titleInput:focus { outline: none; border-color: var(--text-dim); }
+  #titleInput { width: 100%; }
+  #titleInput::placeholder, .field input::placeholder { color: var(--text-faint); }
+  #newFolderInput { margin-top: 10px; }
 
-  .result h3 { margin-top: 0; font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .result h3 { margin: 0 0 12px; font-size: 12px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+  .result h3:not(:first-child) { margin-top: 22px; }
   .result pre {
     white-space: pre-wrap;
     font-family: inherit;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
     background: var(--surface);
-    padding: 18px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    max-height: 260px;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid var(--border-soft);
+    max-height: 280px;
     overflow-y: auto;
   }
   .doc-link {
-    display: inline-block;
-    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
     color: #000;
     background: var(--text);
     text-decoration: none;
     font-weight: 700;
     font-size: 14px;
-    padding: 10px 20px;
+    padding: 12px 22px;
     border-radius: 999px;
+    transition: opacity 0.15s ease;
   }
   .doc-link:hover { opacity: 0.85; }
-  .process-time { font-size: 12px; color: var(--text-dim); margin-top: 10px; }
+  .process-time { font-size: 12px; color: var(--text-faint); margin-top: 12px; }
 
-  .notes-list { display: flex; flex-direction: column; gap: 10px; }
+  .notes-list { display: flex; flex-direction: column; gap: 8px; }
   .note-item {
-    padding: 15px 18px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    padding: 16px 18px;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
+    transition: border-color 0.15s ease, background 0.15s ease;
   }
-  .note-item .meta { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
-  .note-item a { text-decoration: none; font-size: 13px; font-weight: 700; }
+  .note-item:hover { border-color: var(--border); background: var(--card-hover); }
+  .note-item .meta { font-size: 12px; color: var(--text-faint); margin-top: 3px; }
+  .note-item a { text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap; }
 
   .hidden { display: none !important; }
-  .error { color: #fff; background: #2a0000; border: 1px solid #5a1a1a; padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-top: 14px; }
-  .empty { color: var(--text-dim); font-size: 14px; text-align: center; padding: 14px 0; }
+  .error { color: #fff; background: #200000; border: 1px solid #4a1414; padding: 13px 16px; border-radius: 12px; font-size: 14px; margin-top: 16px; }
+  .empty { color: var(--text-faint); font-size: 14px; text-align: center; padding: 16px 0; }
 
   @media (max-width: 640px) {
     .features { grid-template-columns: 1fr; }
-    .landing h1 { font-size: 34px; }
+    .landing h1 { font-size: 36px; }
+    .landing { padding-top: 90px; }
     .topbar { padding: 18px 20px; }
+    .card { padding: 26px; }
   }
 </style>
 </head>
@@ -168,8 +213,9 @@
 
 <!-- Landing page: shown when signed out -->
 <div id="landing" class="landing">
-  <h1>Speak it.<br>We'll write it up.</h1>
-  <p class="sub">Record a voice note and get back a clean, organized summary saved straight to your Google Docs — transcript included.</p>
+  <span class="eyebrow">AI-powered voice notes</span>
+  <h1>Speak it.<br>We'll teach it back to you.</h1>
+  <p class="sub">Record anything — a lecture, a meeting, an idea — and get back detailed, organized notes saved straight to your Google Docs.</p>
   <button id="landingSignIn" class="btn-solid">Get started with Google</button>
 
   <div class="features">
@@ -180,13 +226,13 @@
     </div>
     <div class="feature">
       <div class="num">02</div>
-      <h3>Transcribe</h3>
-      <p>Your speech is transcribed and organized into clear headings and bullets.</p>
+      <h3>Understand</h3>
+      <p>Your speech becomes detailed, clearly structured notes — built to teach, not just summarize.</p>
     </div>
     <div class="feature">
       <div class="num">03</div>
-      <h3>Saved for you</h3>
-      <p>Every note lands in a "Voice Notes" folder in your own Google Drive.</p>
+      <h3>Organized for you</h3>
+      <p>Every note is filed into whichever Google Drive folder you choose.</p>
     </div>
   </div>
 </div>
@@ -201,30 +247,33 @@
       <div id="timer">00:00</div>
       <div id="status">Tap the mic to start recording</div>
 
-      <div style="width:100%; text-align:left;">
-        <label for="folderSelect" style="font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.05em;">Save to folder</label>
-        <select id="folderSelect" style="width:100%; margin-top:6px; padding:12px 16px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:14px; font-family:inherit;">
+      <div class="field">
+        <label for="folderSelect">Save to folder</label>
+        <select id="folderSelect">
           <option value="Voice Notes">Voice Notes (default)</option>
         </select>
-        <input id="newFolderInput" type="text" placeholder="New folder name..." class="hidden" style="width:100%; margin-top:8px; padding:12px 16px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:14px;" />
+        <input id="newFolderInput" type="text" placeholder="New folder name..." class="hidden" />
       </div>
 
-      <input id="titleInput" type="text" placeholder="Optional title (leave blank for auto 'Lecture N - topic')" />
+      <div class="field">
+        <label for="titleInput">Title (optional)</label>
+        <input id="titleInput" type="text" placeholder="Leave blank for auto 'Lecture N - topic'" />
+      </div>
     </div>
     <div id="errorBox" class="error hidden"></div>
   </div>
 
   <div id="resultCard" class="card result hidden">
-    <h3>Summary</h3>
+    <h3>Notes</h3>
     <pre id="summaryText"></pre>
-    <h3>Full Transcript</h3>
+    <h3>Full Transcript (app only — not written to the Doc)</h3>
     <pre id="transcriptText"></pre>
-    <a id="docLink" class="doc-link" href="#" target="_blank">Open in Google Docs</a>
+    <a id="docLink" class="doc-link" href="#" target="_blank">Open in Google Docs →</a>
     <div id="processTime" class="process-time"></div>
   </div>
 
   <div class="card">
-    <h3 style="margin-top:0; font-size:13px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.06em;">Past Notes</h3>
+    <h3 class="section-label">Past Notes</h3>
     <div id="notesList" class="notes-list">
       <div class="empty">No notes yet — record your first one above.</div>
     </div>
