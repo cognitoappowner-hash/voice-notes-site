@@ -6,106 +6,112 @@
 <title>Voice Notes</title>
 <style>
   :root {
-    --bg: #0f1115;
-    --card: #171a21;
-    --accent: #6c5ce7;
-    --accent-hover: #7d6ef2;
-    --danger: #ff5a5f;
-    --text: #eaeaf0;
-    --text-dim: #9a9cab;
-    --border: #262a35;
+    --bg: #000000;
+    --surface: #0a0a0a;
+    --card: #111111;
+    --border: #2a2a2a;
+    --text: #ffffff;
+    --text-dim: #8a8a8a;
+    --accent: #ffffff;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
   }
-  header {
-    width: 100%;
-    max-width: 640px;
+  a { color: var(--text); }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--border);
   }
-  h1 { font-size: 22px; margin: 0; }
-  #authArea { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-dim); }
+  .brand { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+  .authArea { display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--text-dim); }
   button {
     font-family: inherit;
     cursor: pointer;
     border: none;
-    border-radius: 10px;
-    padding: 10px 18px;
+    border-radius: 999px;
+    padding: 11px 22px;
     font-size: 14px;
     font-weight: 600;
+    transition: opacity 0.15s ease, transform 0.1s ease;
   }
-  .btn-primary { background: var(--accent); color: white; }
-  .btn-primary:hover { background: var(--accent-hover); }
-  .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
-  .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  button:active { transform: scale(0.97); }
+  .btn-solid { background: var(--text); color: #000; }
+  .btn-solid:hover { opacity: 0.85; }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--text-dim); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
 
+  /* ---------- Landing page ---------- */
+  .landing { max-width: 720px; margin: 0 auto; padding: 100px 24px 60px; text-align: center; }
+  .landing h1 { font-size: 48px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 20px; }
+  .landing p.sub { font-size: 18px; color: var(--text-dim); max-width: 480px; margin: 0 auto 40px; line-height: 1.5; }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; text-align: left; }
+  .feature { border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+  .feature .num { font-size: 13px; color: var(--text-dim); font-weight: 700; margin-bottom: 10px; }
+  .feature h3 { margin: 0 0 6px; font-size: 15px; }
+  .feature p { margin: 0; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+  /* ---------- App view ---------- */
+  .app { max-width: 640px; margin: 0 auto; padding: 48px 24px 60px; }
   .card {
-    width: 100%;
-    max-width: 640px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
-    margin-bottom: 24px;
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 20px;
   }
-
   .recorder { display: flex; flex-direction: column; align-items: center; gap: 18px; }
   #recordBtn {
-    width: 88px;
-    height: 88px;
+    width: 92px;
+    height: 92px;
     border-radius: 50%;
-    background: var(--danger);
+    background: var(--text);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 0 0 rgba(255, 90, 95, 0.5);
-    transition: transform 0.15s ease;
+    box-shadow: 0 0 0 0 rgba(255,255,255,0.3);
+    border: none;
+    padding: 0;
   }
-  #recordBtn.recording {
-    animation: pulse 1.6s infinite;
-  }
-  #recordBtn:active { transform: scale(0.95); }
-  #recordBtn svg { width: 32px; height: 32px; fill: white; }
+  #recordBtn.recording { background: #ffffff; animation: pulse 1.6s infinite; }
+  #recordBtn svg { width: 34px; height: 34px; fill: #000; }
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 90, 95, 0.55); }
-    70% { box-shadow: 0 0 0 18px rgba(255, 90, 95, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 90, 95, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.35); }
+    70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
   }
-  #status { font-size: 14px; color: var(--text-dim); min-height: 20px; }
-  #timer { font-variant-numeric: tabular-nums; font-size: 28px; font-weight: 600; }
-
+  #status { font-size: 14px; color: var(--text-dim); min-height: 20px; text-align: center; }
+  #timer { font-variant-numeric: tabular-nums; font-size: 30px; font-weight: 700; }
   #titleInput {
     width: 100%;
-    margin-top: 8px;
-    padding: 10px 14px;
+    margin-top: 6px;
+    padding: 12px 16px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: #10131a;
+    background: var(--surface);
     color: var(--text);
     font-size: 14px;
   }
+  #titleInput::placeholder { color: var(--text-dim); }
 
-  .result h3 { margin-top: 0; font-size: 15px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+  .result h3 { margin-top: 0; font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
   .result pre {
     white-space: pre-wrap;
     font-family: inherit;
     font-size: 14px;
-    line-height: 1.5;
-    background: #10131a;
-    padding: 16px;
+    line-height: 1.6;
+    background: var(--surface);
+    padding: 18px;
     border-radius: 10px;
     border: 1px solid var(--border);
     max-height: 260px;
@@ -113,73 +119,115 @@
   }
   .doc-link {
     display: inline-block;
-    margin-top: 12px;
-    color: var(--accent);
+    margin-top: 14px;
+    color: #000;
+    background: var(--text);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 999px;
   }
-  .doc-link:hover { text-decoration: underline; }
+  .doc-link:hover { opacity: 0.85; }
+  .process-time { font-size: 12px; color: var(--text-dim); margin-top: 10px; }
 
   .notes-list { display: flex; flex-direction: column; gap: 10px; }
   .note-item {
-    padding: 14px 16px;
+    padding: 15px 18px;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
   }
-  .note-item .meta { font-size: 13px; color: var(--text-dim); }
-  .note-item a { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; }
+  .note-item .meta { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .note-item a { text-decoration: none; font-size: 13px; font-weight: 700; }
 
   .hidden { display: none !important; }
-  .error { color: var(--danger); font-size: 14px; margin-top: 8px; }
-  .empty { color: var(--text-dim); font-size: 14px; text-align: center; padding: 12px 0; }
+  .error { color: #fff; background: #2a0000; border: 1px solid #5a1a1a; padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-top: 14px; }
+  .empty { color: var(--text-dim); font-size: 14px; text-align: center; padding: 14px 0; }
+
+  @media (max-width: 640px) {
+    .features { grid-template-columns: 1fr; }
+    .landing h1 { font-size: 34px; }
+    .topbar { padding: 18px 20px; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🎙️ Voice Notes</h1>
-  <div id="authArea">
+<div class="topbar">
+  <div class="brand">VOICE NOTES</div>
+  <div class="authArea">
     <span id="userInfo" class="hidden"></span>
-    <button id="loginBtn" class="btn-primary">Sign in with Google</button>
-    <button id="logoutBtn" class="btn-ghost hidden">Sign out</button>
+    <button id="loginBtn" class="btn-solid">Sign in with Google</button>
+    <button id="logoutBtn" class="btn-outline hidden">Sign out</button>
   </div>
-</header>
-
-<div class="card">
-  <div class="recorder">
-    <button id="recordBtn" title="Start recording">
-      <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 0 0-2 0 5 5 0 0 1-10 0 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2h-2v-2.08A7 7 0 0 0 19 11z"/></svg>
-    </button>
-    <div id="timer">00:00</div>
-    <div id="status">Tap the mic to start recording</div>
-    <input id="titleInput" type="text" placeholder="Optional title for this note..." />
-  </div>
-  <div id="errorBox" class="error hidden"></div>
 </div>
 
-<div id="resultCard" class="card result hidden">
-  <h3>Summary</h3>
-  <pre id="summaryText"></pre>
-  <h3>Full Transcript</h3>
-  <pre id="transcriptText"></pre>
-  <a id="docLink" class="doc-link" href="#" target="_blank">Open in Google Docs →</a>
+<!-- Landing page: shown when signed out -->
+<div id="landing" class="landing">
+  <h1>Speak it.<br>We'll write it up.</h1>
+  <p class="sub">Record a voice note and get back a clean, organized summary saved straight to your Google Docs — transcript included.</p>
+  <button id="landingSignIn" class="btn-solid">Get started with Google</button>
+
+  <div class="features">
+    <div class="feature">
+      <div class="num">01</div>
+      <h3>Record</h3>
+      <p>Tap the mic, talk for as long as you need, tap again to stop.</p>
+    </div>
+    <div class="feature">
+      <div class="num">02</div>
+      <h3>Transcribe</h3>
+      <p>Your speech is transcribed and organized into clear headings and bullets.</p>
+    </div>
+    <div class="feature">
+      <div class="num">03</div>
+      <h3>Saved for you</h3>
+      <p>Every note lands in a "Voice Notes" folder in your own Google Drive.</p>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-  <h3 style="margin-top:0; font-size:15px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.04em;">Past Notes</h3>
-  <div id="notesList" class="notes-list">
-    <div class="empty">Sign in to see your saved notes.</div>
+<!-- App view: shown when signed in -->
+<div id="app" class="app hidden">
+  <div class="card">
+    <div class="recorder">
+      <button id="recordBtn" title="Start recording">
+        <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 0 0-2 0 5 5 0 0 1-10 0 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2h-2v-2.08A7 7 0 0 0 19 11z"/></svg>
+      </button>
+      <div id="timer">00:00</div>
+      <div id="status">Tap the mic to start recording</div>
+      <input id="titleInput" type="text" placeholder="Optional title for this note..." />
+    </div>
+    <div id="errorBox" class="error hidden"></div>
+  </div>
+
+  <div id="resultCard" class="card result hidden">
+    <h3>Summary</h3>
+    <pre id="summaryText"></pre>
+    <h3>Full Transcript</h3>
+    <pre id="transcriptText"></pre>
+    <a id="docLink" class="doc-link" href="#" target="_blank">Open in Google Docs</a>
+    <div id="processTime" class="process-time"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0; font-size:13px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.06em;">Past Notes</h3>
+    <div id="notesList" class="notes-list">
+      <div class="empty">No notes yet — record your first one above.</div>
+    </div>
   </div>
 </div>
 
 <script>
   // ---- CONFIG: point this at your deployed Render backend ----
   const API_BASE = "https://audio-notes-backend.onrender.com";
+
+  const landing = document.getElementById("landing");
+  const appView = document.getElementById("app");
 
   const recordBtn = document.getElementById("recordBtn");
   const statusEl = document.getElementById("status");
@@ -190,9 +238,11 @@
   const summaryText = document.getElementById("summaryText");
   const transcriptText = document.getElementById("transcriptText");
   const docLink = document.getElementById("docLink");
+  const processTime = document.getElementById("processTime");
   const notesList = document.getElementById("notesList");
 
   const loginBtn = document.getElementById("loginBtn");
+  const landingSignIn = document.getElementById("landingSignIn");
   const logoutBtn = document.getElementById("logoutBtn");
   const userInfo = document.getElementById("userInfo");
 
@@ -202,6 +252,7 @@
   let timerInterval;
   let secondsElapsed = 0;
   let loggedIn = false;
+  let processingInterval;
 
   function formatTime(s) {
     const m = String(Math.floor(s / 60)).padStart(2, "0");
@@ -225,25 +276,30 @@
       const data = await res.json();
       loggedIn = data.loggedIn;
       if (loggedIn) {
+        landing.classList.add("hidden");
+        appView.classList.remove("hidden");
         loginBtn.classList.add("hidden");
         logoutBtn.classList.remove("hidden");
         userInfo.classList.remove("hidden");
         userInfo.textContent = data.user.name || data.user.email;
         loadNotes();
       } else {
+        landing.classList.remove("hidden");
+        appView.classList.add("hidden");
         loginBtn.classList.remove("hidden");
         logoutBtn.classList.add("hidden");
         userInfo.classList.add("hidden");
-        notesList.innerHTML = '<div class="empty">Sign in to see your saved notes.</div>';
       }
     } catch (e) {
       console.error(e);
     }
   }
 
-  loginBtn.addEventListener("click", () => {
+  function goToSignIn() {
     window.location.href = `${API_BASE}/auth/google`;
-  });
+  }
+  loginBtn.addEventListener("click", goToSignIn);
+  landingSignIn.addEventListener("click", goToSignIn);
   logoutBtn.addEventListener("click", () => {
     window.location.href = `${API_BASE}/auth/logout`;
   });
@@ -260,11 +316,6 @@
   async function startRecording() {
     clearError();
     resultCard.classList.add("hidden");
-
-    if (!loggedIn) {
-      showError("Please sign in with Google first — notes are saved to your Google Docs.");
-      return;
-    }
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -304,7 +355,6 @@
       isRecording = false;
       recordBtn.classList.remove("recording");
       clearInterval(timerInterval);
-      statusEl.textContent = "Processing your recording...";
     }
   }
 
@@ -318,11 +368,21 @@
 
       recordBtn.disabled = true;
 
+      // Live "Processing... Xs" counter while we wait for the backend
+      let processingSeconds = 0;
+      statusEl.textContent = `Processing... ${processingSeconds}s`;
+      processingInterval = setInterval(() => {
+        processingSeconds++;
+        statusEl.textContent = `Processing... ${processingSeconds}s`;
+      }, 1000);
+
       const res = await fetch(`${API_BASE}/api/notes/upload`, {
         method: "POST",
         credentials: "include",
         body: formData
       });
+
+      clearInterval(processingInterval);
 
       const data = await res.json();
 
@@ -333,12 +393,15 @@
       summaryText.textContent = data.note.summary;
       transcriptText.textContent = data.note.transcript;
       docLink.href = data.note.doc_url;
+      const seconds = data.processingMs ? (data.processingMs / 1000).toFixed(1) : null;
+      processTime.textContent = seconds ? `Processed in ${seconds}s` : "";
       resultCard.classList.remove("hidden");
       statusEl.textContent = "Done! Tap the mic to record another note.";
       titleInput.value = "";
       loadNotes();
     } catch (err) {
       console.error(err);
+      clearInterval(processingInterval);
       showError(err.message);
       statusEl.textContent = "Tap the mic to start recording";
     } finally {
