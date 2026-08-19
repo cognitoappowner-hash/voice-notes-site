@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voice Notes</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --accent: #6c5ce7;
+    --accent-hover: #7d6ef2;
+    --danger: #ff5a5f;
+    --text: #eaeaf0;
+    --text-dim: #9a9cab;
+    --border: #262a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  header {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  h1 { font-size: 22px; margin: 0; }
+  #authArea { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-dim); }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .card {
+    width: 100%;
+    max-width: 640px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  .recorder { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  #recordBtn {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 0 rgba(255, 90, 95, 0.5);
+    transition: transform 0.15s ease;
+  }
+  #recordBtn.recording {
+    animation: pulse 1.6s infinite;
+  }
+  #recordBtn:active { transform: scale(0.95); }
+  #recordBtn svg { width: 32px; height: 32px; fill: white; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 90, 95, 0.55); }
+    70% { box-shadow: 0 0 0 18px rgba(255, 90, 95, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 90, 95, 0); }
+  }
+  #status { font-size: 14px; color: var(--text-dim); min-height: 20px; }
+  #timer { font-variant-numeric: tabular-nums; font-size: 28px; font-weight: 600; }
+
+  #titleInput {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #10131a;
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  .result h3 { margin-top: 0; font-size: 15px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+  .result pre {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    background: #10131a;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .doc-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .doc-link:hover { text-decoration: underline; }
+
+  .notes-list { display: flex; flex-direction: column; gap: 10px; }
+  .note-item {
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .note-item .meta { font-size: 13px; color: var(--text-dim); }
+  .note-item a { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; }
+
+  .hidden { display: none !important; }
+  .error { color: var(--danger); font-size: 14px; margin-top: 8px; }
+  .empty { color: var(--text-dim); font-size: 14px; text-align: center; padding: 12px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎙️ Voice Notes</h1>
+  <div id="authArea">
+    <span id="userInfo" class="hidden"></span>
+    <button id="loginBtn" class="btn-primary">Sign in with Google</button>
+    <button id="logoutBtn" class="btn-ghost hidden">Sign out</button>
+  </div>
+</header>
+
+<div class="card">
+  <div class="recorder">
+    <button id="recordBtn" title="Start recording">
+      <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 0 0-2 0 5 5 0 0 1-10 0 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2h-2v-2.08A7 7 0 0 0 19 11z"/></svg>
+    </button>
+    <div id="timer">00:00</div>
+    <div id="status">Tap the mic to start recording</div>
+    <input id="titleInput" type="text" placeholder="Optional title for this note..." />
+  </div>
+  <div id="errorBox" class="error hidden"></div>
+</div>
+
+<div id="resultCard" class="card result hidden">
+  <h3>Summary</h3>
+  <pre id="summaryText"></pre>
+  <h3>Full Transcript</h3>
+  <pre id="transcriptText"></pre>
+  <a id="docLink" class="doc-link" href="#" target="_blank">Open in Google Docs →</a>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0; font-size:15px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.04em;">Past Notes</h3>
+  <div id="notesList" class="notes-list">
+    <div class="empty">Sign in to see your saved notes.</div>
+  </div>
+</div>
+
+<script>
+  // ---- CONFIG: point this at your deployed Render backend ----
+  const API_BASE = "https://audio-notes-backend.onrender.com";
+
+  const recordBtn = document.getElementById("recordBtn");
+  const statusEl = document.getElementById("status");
+  const timerEl = document.getElementById("timer");
+  const titleInput = document.getElementById("titleInput");
+  const errorBox = document.getElementById("errorBox");
+  const resultCard = document.getElementById("resultCard");
+  const summaryText = document.getElementById("summaryText");
+  const transcriptText = document.getElementById("transcriptText");
+  const docLink = document.getElementById("docLink");
+  const notesList = document.getElementById("notesList");
+
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userInfo = document.getElementById("userInfo");
+
+  let mediaRecorder;
+  let audioChunks = [];
+  let isRecording = false;
+  let timerInterval;
+  let secondsElapsed = 0;
+  let loggedIn = false;
+
+  function formatTime(s) {
+    const m = String(Math.floor(s / 60)).padStart(2, "0");
+    const sec = String(s % 60).padStart(2, "0");
+    return `${m}:${sec}`;
+  }
+
+  function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.classList.remove("hidden");
+  }
+  function clearError() {
+    errorBox.classList.add("hidden");
+    errorBox.textContent = "";
+  }
+
+  // ---------- Auth ----------
+  async function checkAuth() {
+    try {
+      const res = await fetch(`${API_BASE}/auth/status`, { credentials: "include" });
+      const data = await res.json();
+      loggedIn = data.loggedIn;
+      if (loggedIn) {
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        userInfo.classList.remove("hidden");
+        userInfo.textContent = data.user.name || data.user.email;
+        loadNotes();
+      } else {
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        userInfo.classList.add("hidden");
+        notesList.innerHTML = '<div class="empty">Sign in to see your saved notes.</div>';
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  loginBtn.addEventListener("click", () => {
+    window.location.href = `${API_BASE}/auth/google`;
+  });
+  logoutBtn.addEventListener("click", () => {
+    window.location.href = `${API_BASE}/auth/logout`;
+  });
+
+  // ---------- Recording ----------
+  recordBtn.addEventListener("click", async () => {
+    if (!isRecording) {
+      await startRecording();
+    } else {
+      stopRecording();
+    }
+  });
+
+  async function startRecording() {
+    clearError();
+    resultCard.classList.add("hidden");
+
+    if (!loggedIn) {
+      showError("Please sign in with Google first — notes are saved to your Google Docs.");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        stream.getTracks().forEach((track) => track.stop());
+        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+        uploadAudio(audioBlob);
+      };
+
+      mediaRecorder.start();
+      isRecording = true;
+      recordBtn.classList.add("recording");
+      statusEl.textContent = "Recording... tap again to stop";
+
+      secondsElapsed = 0;
+      timerEl.textContent = formatTime(secondsElapsed);
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        timerEl.textContent = formatTime(secondsElapsed);
+      }, 1000);
+    } catch (err) {
+      console.error(err);
+      showError("Couldn't access your microphone. Check browser permissions and try again.");
+    }
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      isRecording = false;
+      recordBtn.classList.remove("recording");
+      clearInterval(timerInterval);
+      statusEl.textContent = "Processing your recording...";
+    }
+  }
+
+  async function uploadAudio(blob) {
+    try {
+      const formData = new FormData();
+      formData.append("audio", blob, "recording.webm");
+      if (titleInput.value.trim()) {
+        formData.append("title", titleInput.value.trim());
+      }
+
+      recordBtn.disabled = true;
+
+      const res = await fetch(`${API_BASE}/api/notes/upload`, {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong while processing the audio.");
+      }
+
+      summaryText.textContent = data.note.summary;
+      transcriptText.textContent = data.note.transcript;
+      docLink.href = data.note.doc_url;
+      resultCard.classList.remove("hidden");
+      statusEl.textContent = "Done! Tap the mic to record another note.";
+      titleInput.value = "";
+      loadNotes();
+    } catch (err) {
+      console.error(err);
+      showError(err.message);
+      statusEl.textContent = "Tap the mic to start recording";
+    } finally {
+      recordBtn.disabled = false;
+    }
+  }
+
+  // ---------- Notes list ----------
+  async function loadNotes() {
+    try {
+      const res = await fetch(`${API_BASE}/api/notes`, { credentials: "include" });
+      const data = await res.json();
+      if (!data.notes || data.notes.length === 0) {
+        notesList.innerHTML = '<div class="empty">No notes yet — record your first one above.</div>';
+        return;
+      }
+      notesList.innerHTML = data.notes
+        .map(
+          (n) => `
+        <div class="note-item">
+          <div>
+            <div>${escapeHtml(n.title)}</div>
+            <div class="meta">${new Date(n.created_at).toLocaleString()}</div>
+          </div>
+          <a href="${n.doc_url}" target="_blank">Open Doc →</a>
+        </div>`
+        )
+        .join("");
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  checkAuth();
+</script>
+
+</body>
+</html>
