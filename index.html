@@ -46,7 +46,8 @@
     backdrop-filter: blur(14px);
     z-index: 10;
   }
-  .brand { font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .brand-logo { height: 24px; width: auto; display: block; }
   .authArea { display: flex; align-items: center; gap: 16px; font-size: 14px; color: var(--text-dim); }
   button {
     font-family: inherit;
@@ -66,14 +67,50 @@
   button:disabled { opacity: 0.35; cursor: not-allowed; }
 
   /* ---------- Landing page ---------- */
-  .landing { max-width: 760px; margin: 0 auto; padding: 130px 24px 70px; text-align: center; }
-  .landing .eyebrow {
+  .eyebrow {
     display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--text-dim); border: 1px solid var(--border); padding: 7px 16px; border-radius: 999px; margin-bottom: 28px;
   }
-  .landing h1 { font-size: 56px; line-height: 1.08; font-weight: 800; letter-spacing: -0.035em; margin: 0 0 22px; }
-  .landing p.sub { font-size: 18px; color: var(--text-dim); max-width: 500px; margin: 0 auto 40px; line-height: 1.6; font-weight: 400; }
-  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; text-align: left; }
+
+  /* Hero */
+  .hero { max-width: 720px; margin: 0 auto; padding: 128px 24px 0; text-align: center; }
+  .hero h1 { font-size: 60px; line-height: 1.07; font-weight: 800; letter-spacing: -0.04em; margin: 0 0 24px; }
+  .hero h1 em { font-style: normal; color: var(--text-dim); }
+  .hero .sub { font-size: 19px; color: var(--text-dim); max-width: 540px; margin: 0 auto 38px; line-height: 1.65; font-weight: 400; }
+  .cta-row { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 68px; }
+  .btn-lg { padding: 17px 36px; font-size: 15.5px; }
+  .cta-note { font-size: 13px; color: var(--text-faint); }
+
+  /* Hero visual: waveform -> notes signature */
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center; gap: 30px;
+    max-width: 620px; margin: 0 auto; padding: 44px 30px;
+    border: 1px solid var(--border-soft); border-radius: 24px;
+    background: linear-gradient(180deg, var(--surface), transparent);
+  }
+  .wave { display: flex; align-items: center; gap: 4px; height: 64px; flex-shrink: 0; }
+  .wave span { width: 3px; border-radius: 2px; background: var(--text); opacity: 0.85; animation: waveBar 1.6s ease-in-out infinite; transform-origin: center; }
+  @keyframes waveBar { 0%, 100% { transform: scaleY(0.32); } 50% { transform: scaleY(1); } }
+  .wave-arrow { color: var(--text-faint); font-size: 22px; flex-shrink: 0; }
+  .notes-preview { display: flex; flex-direction: column; gap: 11px; width: 150px; flex-shrink: 0; }
+  .notes-preview span { height: 8px; border-radius: 4px; background: var(--border); display: block; }
+  .notes-preview span:nth-child(1) { width: 100%; background: var(--text-faint); }
+  .notes-preview span:nth-child(2) { width: 82%; }
+  .notes-preview span:nth-child(3) { width: 92%; }
+  .notes-preview span:nth-child(4) { width: 62%; }
+
+  /* Generic content sections */
+  .section { max-width: 1040px; margin: 0 auto; padding: 96px 24px; }
+  .section-head { text-align: center; max-width: 540px; margin: 0 auto 52px; }
+  .section-eyebrow {
+    display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 14px;
+  }
+  .section-head h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0; }
+  .section-head p { font-size: 16px; color: var(--text-dim); line-height: 1.6; margin: 14px 0 0; }
+  .section-top { border-top: 1px solid var(--border-soft); }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: left; }
   .feature {
     border: 1px solid var(--border-soft); border-radius: 16px; padding: 26px;
     background: linear-gradient(180deg, var(--surface), transparent);
@@ -83,6 +120,74 @@
   .feature .num { font-size: 13px; color: var(--text-faint); font-weight: 700; margin-bottom: 12px; letter-spacing: 0.05em; }
   .feature h3 { margin: 0 0 8px; font-size: 16px; font-weight: 700; }
   .feature p { margin: 0; font-size: 13.5px; color: var(--text-dim); line-height: 1.6; }
+
+  /* Showcase: raw speech -> clean notes */
+  .showcase-grid { display: flex; align-items: stretch; gap: 22px; flex-wrap: wrap; }
+  .showcase-card {
+    flex: 1 1 300px; border: 1px solid var(--border-soft); border-radius: 18px; padding: 30px;
+    background: var(--card);
+  }
+  .showcase-label {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 16px;
+  }
+  .showcase-card.raw p { margin: 0; font-size: 14.5px; line-height: 1.75; color: var(--text-dim); font-style: italic; }
+  .showcase-card.clean strong { display: block; font-size: 15px; margin-bottom: 14px; }
+  .showcase-card.clean ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .showcase-card.clean li {
+    font-size: 14.5px; line-height: 1.6; color: var(--text); padding-left: 18px; position: relative;
+  }
+  .showcase-card.clean li::before { content: "—"; position: absolute; left: 0; color: var(--text-faint); }
+  .showcase-arrow { display: flex; align-items: center; justify-content: center; color: var(--text-faint); font-size: 22px; flex: 0 0 auto; }
+
+  /* Audiences */
+  .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: left; }
+  .audience-card { border: 1px solid var(--border-soft); border-radius: 16px; padding: 28px; transition: border-color 0.2s ease, transform 0.2s ease; }
+  .audience-card:hover { border-color: var(--border); transform: translateY(-2px); }
+  .audience-card .tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 14px; }
+  .audience-card h3 { margin: 0 0 10px; font-size: 17px; font-weight: 700; line-height: 1.35; }
+  .audience-card p { margin: 0; font-size: 13.5px; color: var(--text-dim); line-height: 1.65; }
+
+  /* FAQ */
+  .faq-list { max-width: 720px; margin: 0 auto; }
+  .faq-item { border-bottom: 1px solid var(--border-soft); }
+  .faq-q {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    background: none; border: none; color: var(--text); font-family: inherit;
+    font-size: 16px; font-weight: 600; text-align: left; padding: 22px 0; border-radius: 0;
+  }
+  .faq-q:hover { opacity: 0.8; }
+  .faq-icon { flex-shrink: 0; font-size: 20px; color: var(--text-faint); font-weight: 400; transition: transform 0.25s ease; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+    font-size: 14.5px; color: var(--text-dim); line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 240px; padding-bottom: 22px; }
+
+  /* Final CTA band */
+  .final-cta {
+    text-align: center; padding: 110px 24px; border-top: 1px solid var(--border-soft);
+    background: radial-gradient(circle at 50% 100%, rgba(255,255,255,0.05), transparent 60%);
+  }
+  .final-cta h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 16px; }
+  .final-cta p { font-size: 16.5px; color: var(--text-dim); margin: 0 0 34px; }
+
+  /* Footer */
+  .landing-footer {
+    display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+    padding: 34px 24px 46px; font-size: 13px; color: var(--text-faint);
+  }
+  .landing-footer .brand-logo { height: 16px; opacity: 0.8; }
+  .landing-footer .dot { opacity: 0.5; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .wave span { animation: none; transform: scaleY(0.7); }
+  }
 
   /* ---------- App view ---------- */
   .app { max-width: 640px; margin: 0 auto; padding: 52px 24px 70px; }
@@ -193,8 +298,18 @@
 
   @media (max-width: 640px) {
     .features { grid-template-columns: 1fr; }
-    .landing h1 { font-size: 36px; }
-    .landing { padding-top: 90px; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 38px; }
+    .hero { padding-top: 76px; }
+    .hero .sub { font-size: 16.5px; }
+    .section { padding: 64px 24px; }
+    .section-head h2 { font-size: 26px; }
+    .hero-visual { flex-direction: column; padding: 32px 24px; }
+    .wave-arrow { transform: rotate(90deg); }
+    .showcase-grid { flex-direction: column; }
+    .showcase-arrow { transform: rotate(90deg); padding: 6px 0; }
+    .final-cta h2 { font-size: 28px; }
+    .final-cta { padding: 76px 24px; }
     .topbar { padding: 18px 20px; }
     .card { padding: 26px; }
   }
@@ -203,7 +318,10 @@
 <body>
 
 <div class="topbar">
-  <div class="brand">VOICE NOTES</div>
+  <div class="brand">
+    <img src="https://i.imgur.com/1HKgVdm.png" alt="Voice Notes logo" class="brand-logo" />
+    VOICE NOTES
+  </div>
   <div class="authArea">
     <span id="userInfo" class="hidden"></span>
     <button id="loginBtn" class="btn-solid">Sign in with Google</button>
@@ -212,29 +330,158 @@
 </div>
 
 <!-- Landing page: shown when signed out -->
-<div id="landing" class="landing">
-  <span class="eyebrow">AI-powered voice notes</span>
-  <h1>Speak it.<br>We'll teach it back to you.</h1>
-  <p class="sub">Record anything — a lecture, a meeting, an idea — and get back detailed, organized notes saved straight to your Google Docs.</p>
-  <button id="landingSignIn" class="btn-solid">Get started with Google</button>
+<div id="landing">
 
-  <div class="features">
-    <div class="feature">
-      <div class="num">01</div>
-      <h3>Record</h3>
-      <p>Tap the mic, talk for as long as you need, tap again to stop.</p>
+  <!-- Hero -->
+  <section class="hero">
+    <span class="eyebrow">AI-powered voice notes</span>
+    <h1>Talk for an hour.<br><em>Understand it in five minutes.</em></h1>
+    <p class="sub">Voice Notes turns lectures, meetings, and rambling voice memos into clear, structured notes — filed straight into your Google Docs before you've even sat back down.</p>
+    <div class="cta-row">
+      <button id="landingSignIn" class="btn-solid btn-lg">Get started with Google</button>
+      <span class="cta-note">Free to start · No credit card · Sign in in 10 seconds</span>
     </div>
-    <div class="feature">
-      <div class="num">02</div>
-      <h3>Understand</h3>
-      <p>Your speech becomes detailed, clearly structured notes — built to teach, not just summarize.</p>
+  </section>
+
+  <section class="hero" style="padding-top: 0; padding-bottom: 90px;">
+    <div class="hero-visual reveal" aria-hidden="true">
+      <div class="wave">
+        <span style="height:14px; animation-delay:0s;"></span>
+        <span style="height:38px; animation-delay:0.1s;"></span>
+        <span style="height:24px; animation-delay:0.2s;"></span>
+        <span style="height:48px; animation-delay:0.3s;"></span>
+        <span style="height:20px; animation-delay:0.15s;"></span>
+        <span style="height:44px; animation-delay:0.35s;"></span>
+        <span style="height:16px; animation-delay:0.05s;"></span>
+        <span style="height:34px; animation-delay:0.25s;"></span>
+        <span style="height:22px; animation-delay:0.4s;"></span>
+        <span style="height:40px; animation-delay:0.1s;"></span>
+      </div>
+      <div class="wave-arrow">→</div>
+      <div class="notes-preview">
+        <span></span><span></span><span></span><span></span>
+      </div>
     </div>
-    <div class="feature">
-      <div class="num">03</div>
-      <h3>Organized for you</h3>
-      <p>Every note is filed into whichever Google Drive folder you choose.</p>
+  </section>
+
+  <!-- How it works -->
+  <section class="section section-top reveal">
+    <div class="section-head">
+      <span class="section-eyebrow">The process</span>
+      <h2>Three steps between talking and understanding</h2>
     </div>
-  </div>
+    <div class="features">
+      <div class="feature">
+        <div class="num">01</div>
+        <h3>Record</h3>
+        <p>Tap the mic, talk for as long as you need — a two-minute thought or a two-hour lecture — tap again to stop.</p>
+      </div>
+      <div class="feature">
+        <div class="num">02</div>
+        <h3>Understand</h3>
+        <p>Your speech becomes detailed, clearly structured notes — built to teach the material back to you, not just summarize it.</p>
+      </div>
+      <div class="feature">
+        <div class="num">03</div>
+        <h3>Organized for you</h3>
+        <p>Every note is filed straight into whichever Google Drive folder you choose. Nothing to copy, paste, or clean up.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- See it in action -->
+  <section class="section section-top reveal">
+    <div class="section-head">
+      <span class="section-eyebrow">See it in action</span>
+      <h2>From rambling to readable</h2>
+      <p>This is what actually happens to a real, messy recording.</p>
+    </div>
+    <div class="showcase-grid">
+      <div class="showcase-card raw">
+        <div class="showcase-label">What you say</div>
+        <p>"okay so today we covered like three main things, um, first was supply and demand curves and how price ceilings mess with the equilibrium, then we got into elasticity which is basically how sensitive demand is to price changes, and then right at the end she mentioned the midterm covers chapters four through six..."</p>
+      </div>
+      <div class="showcase-arrow">→</div>
+      <div class="showcase-card clean">
+        <div class="showcase-label">What you get</div>
+        <strong>Econ 101 — Lecture 14</strong>
+        <ul>
+          <li>Supply &amp; demand: price ceilings distort market equilibrium</li>
+          <li>Elasticity measures how sensitive demand is to price changes</li>
+          <li>Midterm covers chapters 4–6</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="section section-top reveal">
+    <div class="section-head">
+      <span class="section-eyebrow">Built for</span>
+      <h2>Whoever's tired of writing things down</h2>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card">
+        <div class="tag">Students</div>
+        <h3>Walk into every exam already having reviewed the lecture twice.</h3>
+        <p>Record class as it happens. Study from clean notes instead of a page of half-finished sentences.</p>
+      </div>
+      <div class="audience-card">
+        <div class="tag">Professionals</div>
+        <h3>Leave meetings with decisions written down, not half-remembered.</h3>
+        <p>Stay in the conversation instead of typing through it. The notes catch up to you afterward.</p>
+      </div>
+      <div class="audience-card">
+        <div class="tag">Writers &amp; researchers</div>
+        <h3>Turn a rambling interview into something you can actually quote.</h3>
+        <p>Talk through your thinking out loud and get back an organized starting point, not a wall of text.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-top reveal">
+    <div class="section-head">
+      <span class="section-eyebrow">Questions</span>
+      <h2>Good to know</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" type="button">Where do my notes actually go?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Every note is saved as a real Google Doc, in the Drive folder you choose. Nothing is locked inside Voice Notes — it's your document from the moment it's created.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How long can a recording be?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Record for as long as the moment needs — a quick voice memo or a full lecture. The mic keeps running until you tap it again.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Can I see the full transcript, not just the notes?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. The full transcript is always available right in the app alongside your structured notes, in case you need the exact wording.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Do I need to install anything?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No. Voice Notes runs entirely in your browser. Sign in with Google and you're ready to record.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">What does signing in with Google give you access to?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Just enough to create and organize your notes as Google Docs in your Drive — nothing more.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta reveal">
+    <h2>Your next conversation could already be notes.</h2>
+    <p>Sign in, hit record, and stop writing things down by hand.</p>
+    <button id="landingSignIn2" class="btn-solid btn-lg">Get started with Google</button>
+  </section>
+
+  <footer class="landing-footer">
+    <img src="https://i.imgur.com/1HKgVdm.png" alt="Voice Notes logo" class="brand-logo" />
+    <span class="dot">·</span>
+    <span>Record it once. Never write it up again.</span>
+  </footer>
+
 </div>
 
 <!-- App view: shown when signed in -->
@@ -361,9 +608,40 @@
   }
   loginBtn.addEventListener("click", goToSignIn);
   landingSignIn.addEventListener("click", goToSignIn);
+  const landingSignIn2 = document.getElementById("landingSignIn2");
+  if (landingSignIn2) landingSignIn2.addEventListener("click", goToSignIn);
   logoutBtn.addEventListener("click", () => {
     window.location.href = `${API_BASE}/auth/logout`;
   });
+
+  // ---------- FAQ accordion ----------
+  document.querySelectorAll(".faq-item").forEach((item) => {
+    const q = item.querySelector(".faq-q");
+    q.addEventListener("click", () => {
+      const wasOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item.open").forEach((el) => el.classList.remove("open"));
+      if (!wasOpen) item.classList.add("open");
+    });
+  });
+
+  // ---------- Scroll reveal ----------
+  const revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && revealEls.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    revealEls.forEach((el) => observer.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add("visible"));
+  }
 
   // ---------- Folder picker ----------
   async function loadFolders() {
